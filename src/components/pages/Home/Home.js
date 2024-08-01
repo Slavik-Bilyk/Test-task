@@ -3,89 +3,73 @@ import './Home.css';
 import Contacts from '../../Contacts/Contacts';
 
 const Home = () => {
-  const [userContact, setUserContact] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-  });
+  const [userContact, setUserContact] = useState({ firstName: '', lastName: '', email: '' });
   const [contacts, setContacts] = useState([]);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    
-    fetch('https://live.devnimble.com/api/v1/contacts?sort=created:desc', {
+    fetch('https://cors-anywhere.herokuapp.com/https://live.devnimble.com/api/v1/contacts?sort=created:desc', {
       method: 'GET',
       headers: { 'Authorization': 'Bearer VlP9cwH6cc7Kg2LsNPXpAvF6QNmgZn' },
     })
       .then(response => response.json())
-      .then(data => setContacts(data.contacts)) 
+      .then(data => {
+        if (data && data.contacts) {
+          setContacts(data.contacts);
+        } else {
+          setError('Failed to fetch contacts');
+        }
+      })
       .catch(error => {
         console.error('Error fetching contacts:', error);
         setError('Failed to fetch contacts');
       });
   }, []);
 
-
   const handleChange = (e) => {
     const { id, value } = e.target;
-    setUserContact(prevContact => ({
-      ...prevContact,
-      [id]: value
-    }));
+    setUserContact(prevContact => ({ ...prevContact, [id]: value }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (userContact.firstName || userContact.lastName) {
-      if (userContact.email && !/\S+@\S+\.\S+/.test(userContact.email)) {
-        setError('Invalid email format');
-        return;
+    const newContact = {
+      record_type: 'person',
+      privacy: { edit: null, read: null },
+      owner_id: null,
+      fields: {
+        'first name': [{ value: userContact.firstName, modifier: '', label: 'first name' }],
+        'last name': [{ value: userContact.lastName, modifier: '', label: 'last name' }],
+        'email': [{ value: userContact.email, modifier: '', label: 'email' }],
       }
-      const newContact = {
-        record_type: 'person',
-        privacy: {
-          edit: null,
-          read: null,
-        },
-        owner_id: null,
-        fields: {
-          'first name': [{ value: userContact.firstName, modifier: '', label: 'first name' }],
-          'last name': [{ value: userContact.lastName, modifier: '', label: 'last name' }],
-          'email': [{ value: userContact.email, modifier: '', label: 'email' }],
-        }
-      };
-  
-      fetch('https://live.devnimble.com/api/v1/contact', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer VlP9cwH6cc7Kg2LsNPXpAvF6QNmgZn',
-        },
-        body: JSON.stringify(newContact)
-      })
-        .then(response => {
-          if (!response.ok) {
-            return response.text().then(text => {
-              throw new Error('Error adding contact: ' + text);
-            });
-          }
-          return response.json();
-        })
-        .then(data => {
+    };
+
+    fetch('https://cors-anywhere.herokuapp.com/https://live.devnimble.com/api/v1/contact', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer VlP9cwH6cc7Kg2LsNPXpAvF6QNmgZn',
+      },
+      body: JSON.stringify(newContact)
+    })
+      .then(response => response.json())
+      .then(data => {
+        if (data) {
           setContacts(prevContacts => [data, ...prevContacts]);
           setUserContact({ firstName: '', lastName: '', email: '' });
           setError(null);
-        })
-        .catch(error => {
-          console.error('Error adding contact:', error);
-          setError('Failed to add contact: ' + error.message);
-        });
-    } else {
-      setError('Either first name or last name is required');
-    }
+        } else {
+          setError('Failed to add contact');
+        }
+      })
+      .catch(error => {
+        console.error('Error adding contact:', error);
+        setError('Failed to add contact');
+      });
   };
+
   const deleteContact = (id) => {
-    fetch(`https://live.devnimble.com/api/v1/contact/${id}`, {
+    fetch(`https://cors-anywhere.herokuapp.com/https://live.devnimble.com/api/v1/contact/${id}`, {
       method: 'DELETE',
       headers: { 'Authorization': 'Bearer VlP9cwH6cc7Kg2LsNPXpAvF6QNmgZn' },
     })
@@ -93,9 +77,7 @@ const Home = () => {
         if (response.ok) {
           setContacts(prevContacts => prevContacts.filter(contact => contact.id !== id));
         } else {
-          return response.text().then(text => {
-            throw new Error('Error deleting contact: ' + text);
-          });
+          setError('Failed to delete contact');
         }
       })
       .catch(error => {

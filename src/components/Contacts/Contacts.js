@@ -12,10 +12,10 @@ const Contacts = ({ contacts, deleteContact }) => {
           <div>
             <NavLink to={`/contact/${contact.id}`} className='navLink'>
               <div className='name'>
-                {contact.fields['first name'][0].value} {contact.fields['last name'][0].value}
+                {contact.fields['first name'][0]?.value} {contact.fields['last name'][0]?.value}
               </div>
               <div className='email'>
-                {contact.fields['email'][0].value}
+                {contact.fields['email'][0]?.value}
               </div>
               <div className='tags'>
                 {contact.tags ? contact.tags.join(', ') : 'No tags'}
