@@ -1,30 +1,34 @@
-import React from 'react'
-import avatar from './avatar.svg'
+import React from 'react';
+import avatar from './avatar.svg';
 import { TiDeleteOutline } from "react-icons/ti";
-import { NavLink, Outlet } from 'react-router-dom';
-
+import { NavLink } from 'react-router-dom';
 
 const Contacts = ({ contacts, deleteContact }) => {
-    return (
-      <>
-        {contacts.map((contact, index) => (
-          <li key={index} className='contactItem'>
-            <img src={avatar} alt="Avatar" />
-            <div>
-           <NavLink to='/contact' className='navLink'>
-            <div className='name'>
-              {contact.firstName} {contact.lastName}
+  return (
+    <>
+      {contacts.map((contact) => (
+        <li key={contact.id} className='contactItem'>
+          <img src={contact.avatar || avatar} alt="Avatar" /> {/* Assuming 'avatar' field */}
+          <div>
+            <NavLink to={`/contact/${contact.id}`} className='navLink'>
+              <div className='name'>
+                {contact.fields['first name'][0].value} {contact.fields['last name'][0].value}
+              </div>
+              <div className='email'>
+                {contact.fields['email'][0].value}
+              </div>
+              <div className='tags'>
+                {contact.tags ? contact.tags.join(', ') : 'No tags'}
+              </div>
+            </NavLink>
+            <div className='delete'>
+              <TiDeleteOutline size={25} onClick={() => deleteContact(contact.id)} />
             </div>
-            <div className='email'>
-              {contact.email}
-            </div>
-           </NavLink>
-           <div className='delete'><TiDeleteOutline size={25} onClick={() => deleteContact(index)} /></div>
           </div>
-          </li>
-        ))}
-      </>
-    );
-  };
+        </li>
+      ))}
+    </>
+  );
+};
 
-export default Contacts
+export default Contacts;
