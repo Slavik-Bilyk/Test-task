@@ -51,3 +51,38 @@ export const deleteContact = async (id) => {
     throw error;
   }
 };
+
+export const fetchUserDetails = async (id) => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/contact/${id}`, {
+        method: 'GET',
+        headers,
+      });
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error('Error fetching user details: ' + errorText);
+      }
+      const data = await response.json();
+      return data.resources || [];
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  };
+
+  export const updateTags = async (id, tags) => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/contact/${id}/tags`, {
+        method: 'PUT',
+        headers,
+        body: JSON.stringify({ tags }),
+      });
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error('Помилка при оновленні тегів: ' + errorText);
+      }
+      return await response.json();
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  };

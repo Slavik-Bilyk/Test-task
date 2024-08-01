@@ -11,7 +11,7 @@ const Contacts = ({ contacts, deleteContact }) => {
           <li key={contact.id} className='contactItem'>
             <img src={contact.avatar || avatar} alt="Avatar" />
             <div>
-              <NavLink to={`/contact/${contact.id}`} className='navLink'>
+              <NavLink to={`/user/${contact.id}`} className='navLink'>
                 <div className='name'>
                   {contact.fields['first name']?.[0]?.value || 'No first name'} {contact.fields['last name']?.[0]?.value || 'No last name'}
                 </div>

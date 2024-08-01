@@ -21,14 +21,17 @@ Notiflix.Notify.init({
     });
     const [contacts, setContacts] = useState([]);
     const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(false)
   
     useEffect(() => {
+    setLoading(true)
       fetchContacts()
         .then(data => setContacts(data))
         .catch(error => {
           setError('Failed to fetch contacts');
           Notiflix.Notify.failure('Failed to fetch contacts');
-        });
+        })
+        .finally(() => setLoading(false))
     }, []);
   
     const handleChange = (e) => {
@@ -87,6 +90,7 @@ Notiflix.Notify.init({
         });
     };
   
+
     return (
       <div className='container'>
         <div className='blockForm'>
@@ -134,17 +138,19 @@ Notiflix.Notify.init({
         </div>
   
         <div className='blockContacts'>
-          <h1>Contacts</h1>
-          {contacts.length > 0 ? (
-            <div className='bgBlock'>
-              <ul className='contactList'>
-                <Contacts contacts={contacts} deleteContact={handleDelete} />
-              </ul>
-            </div>
-          ) : (
-            <div>No contacts available</div>
-          )}
-        </div>
+        <h1>Contacts</h1>
+        {loading ? (
+          <div>Loading...</div>
+        ) : contacts.length > 0 ? (
+          <div className='bgBlock'>
+            <ul className='contactList'>
+              <Contacts contacts={contacts} deleteContact={handleDelete} />
+            </ul>
+          </div>
+        ) : (
+          <div>No contacts available</div>
+        )}
+      </div>
       </div>
     );
   };

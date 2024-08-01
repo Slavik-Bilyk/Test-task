@@ -1,0 +1,92 @@
+.userPage {
+    max-width: 600px;
+    margin: 100px auto;
+    padding: 20px;
+    text-align: left; 
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.userBlock {
+    display: flex;
+    flex-direction: column; 
+    align-items: flex-start; 
+    background-color: #e0f7fa;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.userImg {
+    position: absolute;
+    top: 150px;
+    width: 80px;
+    height: 80px; 
+    border-radius: 50%;
+    margin-bottom: 20px;
+}
+
+.title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    margin-left: 100px;
+}
+
+.description {
+    font-size: 18px;
+    color: #555;
+    margin-top: 10px; 
+    margin-left: 100px;
+
+}
+
+.inputContainer {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.inputContainer input {
+    width: 530px;
+    height: 40px;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.inputContainer button {
+    width: 550px;
+    height: 40px;
+    margin-top: 20px;
+    border-radius: 10px;
+}
+
+.inputContainer button:hover {
+ cursor: pointer;
+ background-color: transparent;
+}
+
+@media (max-width: 768px) {
+    .userPage {
+        max-width: 90%;
+        margin: 20px auto;
+        padding: 10px;
+    }
+
+    .userBlock {
+        padding: 10px;
+    }
+
+    img {
+        width: 60px;
+        height: 60px;
+    }
+
+    .title {
+        font-size: 20px;
+    }
+
+    .description {
+        font-size: 16px;
+    }
+}
