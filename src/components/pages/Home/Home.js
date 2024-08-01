@@ -12,13 +12,13 @@ const Home = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Fetch contacts from the API when the component mounts
+    
     fetch('https://live.devnimble.com/api/v1/contacts?sort=created:desc', {
       method: 'GET',
       headers: { 'Authorization': 'Bearer VlP9cwH6cc7Kg2LsNPXpAvF6QNmgZn' },
     })
       .then(response => response.json())
-      .then(data => setContacts(data.contacts)) // Assuming data.contacts contains the contact list
+      .then(data => setContacts(data.contacts)) 
       .catch(error => {
         console.error('Error fetching contacts:', error);
         setError('Failed to fetch contacts');

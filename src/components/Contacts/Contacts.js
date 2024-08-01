@@ -8,7 +8,7 @@ const Contacts = ({ contacts, deleteContact }) => {
     <>
       {contacts.map((contact) => (
         <li key={contact.id} className='contactItem'>
-          <img src={contact.avatar || avatar} alt="Avatar" /> {/* Assuming 'avatar' field */}
+          <img src={contact.avatar || avatar} alt="Avatar" />
           <div>
             <NavLink to={`/contact/${contact.id}`} className='navLink'>
               <div className='name'>
